@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { transporter } = require("../config");// Import transporter
 const crypto = require("crypto");
+const { use } = require("../Routes/userRoutes");
 
 const otpMap = new Map(); // Temporary OTP storage
 
@@ -35,7 +36,9 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    res.status(200).json({ message: "Login successful", token });
+    const userinfo = {name:user.name , email:user.email }
+
+    res.status(200).json({ message: "Login successful", token , userinfo });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
