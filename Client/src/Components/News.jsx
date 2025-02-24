@@ -4,7 +4,7 @@ import defaultImage from "../Images/defaultnewsimage.jpg";
 import AdComponent from "./Add";
 
 // Updated API Key and Base URL for currentsapi
-const API_KEY = "iIiFsXASZEXAAR0FZb7Vb6exFlEPX4-M6vm43K56sIqD-gJL"; // Your updated API key
+const API_KEY = "your_api_key"; // Your updated API key
 const CATEGORIES = [
   "world",
   "regional",
