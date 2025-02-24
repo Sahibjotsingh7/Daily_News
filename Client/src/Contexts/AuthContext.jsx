@@ -1,43 +1,63 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from "react";
 
-// Create Context
 const AuthContext = createContext();
 
-// AuthProvider component
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return !!localStorage.getItem("token"); // Check if token exists
+  });
+  const [user, setUser] = useState(() => {
+    return JSON.parse(localStorage.getItem("user")) || null; // Load user from storage
+  });
 
   useEffect(() => {
-    // Check if user info exists in localStorage
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('token');
+    const checkTokenValidity = async () => {
+      const storedToken = localStorage.getItem("token");
 
-    if (storedUser && storedToken) {
-      try {
-        const parsedUser = JSON.parse(storedUser); // Attempt to parse user data
-        setUser(parsedUser);
-        setIsLoggedIn(true);  // If user data exists, mark as logged in
-      } catch (error) {
-        // If parsing fails, reset the user and token
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
+      if (!storedToken) {
+        setIsLoggedIn(false);
+        setUser(null);
+        return;
       }
-    }
-  }, []);  // Only runs once on component mount
+
+      try {
+        const response = await fetch("http://localhost:8080/api/auth/verify-token", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${storedToken}`,
+            "Content-Type": "application/json"
+          },
+        });
+        
+
+        console.log(response);
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+          setIsLoggedIn(true);
+        } else {
+          logout(); // Call logout if token is invalid
+        }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+        logout(); // Ensure logout on failure
+      }
+    };
+
+    checkTokenValidity();
+  }, []);
 
   const login = (userData, token) => {
-    // Save user info and token to localStorage
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', token);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", token);
     setUser(userData);
     setIsLoggedIn(true);
   };
 
   const logout = () => {
-    // Remove user info and token from localStorage
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     setIsLoggedIn(false);
   };
@@ -49,5 +69,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use the AuthContext
 export const useAuth = () => useContext(AuthContext);

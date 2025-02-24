@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors"); // Import cors
 const { connectDB } = require("./config");
 const userRoutes = require("./Routes/userRoutes");
+const tokenRoute = require("./Routes/tokenRoute")
 
 const app = express();
 
@@ -16,6 +17,7 @@ connectDB();
 
 app.use(express.json());
 app.use("/api/users", userRoutes);
+app.use("/api" ,tokenRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello, Express Server!");
