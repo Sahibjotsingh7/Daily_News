@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import "../App.css"; // Import CSS file
 import defaultImage from "../Images/defaultnewsimage.jpg";
+import AdComponent from "./Add";
 
 // Updated API Key and Base URL for currentsapi
-const API_KEY = "yihk6l0YpaXAS1Kv73wmJOGkXdZnNV2gpeh39W_hTyI-aG1P"; // Your updated API key
+const API_KEY = "iIiFsXASZEXAAR0FZb7Vb6exFlEPX4-M6vm43K56sIqD-gJL"; // Your updated API key
 const CATEGORIES = [
   "world",
   "regional",
@@ -114,7 +115,7 @@ const News = () => {
           </select>
         </div>
       </nav>
-
+    
       {/* Breaking News Section */}
       {showBreakingNews && articles.length > 0 && (
         <div
@@ -147,6 +148,7 @@ const News = () => {
           </button>
         </div>
       )}
+      <AdComponent/>
 
       {/* News Feed */}
       <div className="news-feed">
