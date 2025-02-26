@@ -4,7 +4,10 @@ import defaultImage from "../Images/defaultnewsimage.jpg";
 import AdComponent from "./Add";
 
 // Updated API Key and Base URL for currentsapi
+
 const API_KEY = "your_api_key"; // Your updated API key
+
+
 const CATEGORIES = [
   "world",
   "regional",
@@ -35,7 +38,7 @@ const News = () => {
     setLoading(true);
     try {
       const countryCode = COUNTRIES[country]; // Get the country code from the selected country
-      const url = `https://api.currentsapi.services/v1/latest-news?category=${category}&country=${countryCode}&apiKey=${API_KEY}`;
+      const url = `https://api.currentsapi.services/v1/latest-news?category=${category}&country=${countryCode}&apiKey=${sample}`;
       const response = await fetch(url);
       const data = await response.json();
 

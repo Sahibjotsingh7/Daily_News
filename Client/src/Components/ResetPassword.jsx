@@ -1,19 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "../App.css"
+import { useAuth } from "../Contexts/AuthContext";
+import "../App.css";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const { email } = location.state || {};
+
+  // Get email from location state or local storage
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const email = storedUser?.email || location.state?.email;
+
+  useEffect(() => {
+    if (!email) {
+      alert("Please log in to reset your password!");
+      navigate("/login"); // Redirect to login page
+    }
+  }, [email, navigate]);
 
   const handleReset = async (e) => {
     e.preventDefault();
 
-    if(!email){
-      alert('please got login !')
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long.");
+      return;
     }
 
     if (password !== confirmPassword) {
@@ -21,17 +33,22 @@ const ResetPassword = () => {
       return;
     }
 
-    const response = await fetch("http://localhost:8080/api/users/reset-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("http://localhost:8080/api/users/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (response.ok) {
-      alert("Password reset successful! Please login.");
-      navigate("/login");
-    } else {
-      alert("Error resetting password. Try again.");
+      if (response.ok) {
+        alert("Password reset successful! Please login.");
+        navigate("/login");
+      } else {
+        alert("Error resetting password. Try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong! Try again later.");
     }
   };
 

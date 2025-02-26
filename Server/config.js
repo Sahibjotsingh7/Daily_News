@@ -18,17 +18,13 @@ const connectDB = async () => {
 
 // Email transporter
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587, // 465 for SSL, 587 for TLS
-    secure: false, // Use TLS
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS, // App password
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+  service: "gmail", // Instead of manually setting host
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS, // Ensure it's an App Password
+  },
+});
+
   
 
 module.exports = { connectDB, transporter };
