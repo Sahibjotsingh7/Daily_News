@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import Vector1 from '../Images/freepik__background__89079.png';
 import Vector2 from '../Images/freepik__adjust__58488.png';
+import Footer from './Footer';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-
+     <Footer/>
     </div>
   );
 }
