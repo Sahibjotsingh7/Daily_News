@@ -21,6 +21,7 @@ const Navbar = () => {
       <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
         <li><NavLink to="/" className="nav-link">Home</NavLink></li>
         <li><NavLink to="/news" className="nav-link">News</NavLink></li>
+        <li><NavLink to="/weather" className="nav-link">Weather</NavLink></li>
         <li><NavLink to="/upload" className="nav-link">Upload+</NavLink></li>
         <li><NavLink to="/articles" className="nav-link">Articles</NavLink></li>
         {isLoggedIn ? (

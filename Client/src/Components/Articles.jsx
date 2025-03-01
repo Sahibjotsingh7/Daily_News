@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FaVolumeUp } from "react-icons/fa";
+
 import "../App.css";
 
 const Articles = () => {
@@ -17,20 +19,35 @@ const Articles = () => {
     fetchArticles();
   }, []);
 
+  const playAudio = (text) => {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US";
+    speech.rate = 1; // Speed of speech
+    speech.pitch = 1;
+    window.speechSynthesis.speak(speech);
+  };
+
   return (
     <div className="articles-container">
       <h1>All Articles</h1>
-      {articles.length === 0 ? (
-        <p>No articles available</p>
+       <div className="inner-articles-container">
+       {articles.length === 0 ? (
+        <p className="no-articles">No articles available</p>
       ) : (
         articles.map((article) => (
           <div key={article._id} className="article-card">
-            <h3>{article.heading}</h3>
-            <p>{article.description}</p>
-            <p className="author">By: {article.author.name}</p>
+            <FaVolumeUp className="play-audio" onClick={() => playAudio(article.description)} />
+            <h4 className="article-topic">{article.topic}</h4>
+            <h3 className="article-heading">{article.heading}</h3>
+            <p className="article-description">{article.description}</p>
+            <div className="article-footer">
+              <span className="article-author">{article.author.name}</span>
+              <span className="article-date">{new Date(article.time).toDateString()}</span>
+            </div>
           </div>
         ))
       )}
+       </div>
     </div>
   );
 };

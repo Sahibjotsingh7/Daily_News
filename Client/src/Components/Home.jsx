@@ -9,7 +9,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ backgroundColor: "#2f3235" }}>
+    <div style={{ backgroundColor: "aliceBlue" }}>
       {/* Hero Section */}
       <div className="upper_home">
         <div className="upper_home_inner">

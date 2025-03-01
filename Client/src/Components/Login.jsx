@@ -42,7 +42,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h1 style={{color:"aliceblue"}}>Welcome Back</h1>
+        <h1 >Welcome Back</h1>
         <div className="input-group">
           <FaEnvelope className="icon" />
           <input
@@ -66,8 +66,8 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="login-btn">Login</button>
-        <p style={{color:"white" , marginTop:"10px"}}>
-        <Link to="/forgot-password"  style={{color:"white" , marginTop:"10px"}}>Forgot Password ?</Link>
+        <p style={{color:"black" , marginTop:"10px"}}>
+        <Link to="/forgot-password"  style={{  marginTop:"10px"}}>Forgot Password ?</Link>
         </p>
       </form>
     </div>

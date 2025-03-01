@@ -42,7 +42,7 @@ const Dashboard = () => {
   }
 
   const userInfo = localStorage.getItem("user");
-  const userData = userInfo ? JSON.parse(userInfo) : {}; // Prevent null errors
+  const userData = userInfo ? JSON.parse(userInfo) : {};
 
   return (
     <div className="dashboard-container">
@@ -60,15 +60,15 @@ const Dashboard = () => {
         {articles.length === 0 ? (
           <p>No articles found</p>
         ) : (
-          <ul>
+          <div>
             {articles.map((article) => (
-              <li key={article._id} className="article-item">
+              <div key={article._id} className="article-item">
                 <h3>{article.heading}</h3>
                 <p>{article.description}</p>
                 <button className="delete-button" onClick={() => deleteArticle(article._id)}>Delete</button>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
