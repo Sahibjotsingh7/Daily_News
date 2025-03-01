@@ -12,6 +12,7 @@ import ResetPassword from "./Components/ResetPassword";
 import News from "./Components/News";
 import Articles from "./Components/Articles";
 import { AuthProvider, useAuth } from "./Contexts/AuthContext"; // Import useAuth
+import Weather from "./Components/Weather";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -54,6 +55,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <News />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/weather"
+            element={
+              <ProtectedRoute>
+                <Weather />
               </ProtectedRoute>
             }
           />

@@ -9,7 +9,6 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get email from location state or local storage
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const email = storedUser?.email || location.state?.email;
 

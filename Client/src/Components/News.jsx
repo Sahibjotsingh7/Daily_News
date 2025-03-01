@@ -74,7 +74,7 @@ const News = () => {
   return (
     <div className="news-container">
       {/* Navbar with Category Filter and Country Selector */}
-      <nav style={{ padding: '10px', margin: "10px 0px", background: "black", borderRadius: "5px"  , marginTop:"50px", width:"90%"}}>
+      <nav style={{ padding: '10px', margin: "10px 0px", background: "#A1A1A1", borderRadius: "5px"  , marginTop:"50px", width:"90%"}}>
         <div style={{ display: "flex", justifyContent: "center", gap: "20px", alignItems: "center" }}>
           {/* Category Filter */}
           <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', margin: 0, padding: 0, gap: "10px" }}>
@@ -82,7 +82,7 @@ const News = () => {
               <li key={cat} style={{ margin: '0 5px' }}>
                 <button
                   style={{
-                    color: category === cat ? 'darkred' : 'gray',
+                    color: category === cat ? 'red' : 'black',
                     border: 'none',
                     cursor: 'pointer',
                     fontSize: '16px',

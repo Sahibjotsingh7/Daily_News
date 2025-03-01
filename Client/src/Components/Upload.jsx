@@ -1,6 +1,8 @@
+// Upload.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import "../App.css";
+import sideImage from "../Images/freepik__background__95203.png";
 
 const Upload = () => {
   const [article, setArticle] = useState({ topic: "", heading: "", description: "" });
@@ -17,6 +19,7 @@ const Upload = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Article added successfully");
+      setArticle({ topic: "", heading: "", description: "" }); // Reset form
     } catch (error) {
       console.error("Error adding article", error);
     }
@@ -24,13 +27,55 @@ const Upload = () => {
 
   return (
     <div className="upload-container">
-      <h2>Add Article</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="topic" placeholder="Topic" onChange={handleChange} required />
-        <input type="text" name="heading" placeholder="Heading" onChange={handleChange} required />
-        <textarea name="description" placeholder="Description" onChange={handleChange} required />
-        <button type="submit" className="submit-button">Submit</button>
-      </form>
+      <div className="upload-header">
+        <h1>Share Your Expertise</h1>
+        <p className="subtitle">Contribute valuable knowledge to our community</p>
+      </div>
+      <div className="inner-upload">
+        <div className="left-image">
+          <img src={sideImage} alt="Decorative background" />
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="topic">Topic</label>
+            <input
+              type="text"
+              id="topic"
+              name="topic"
+              value={article.topic}
+              placeholder="Enter topic"
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="heading">Heading</label>
+            <input
+              type="text"
+              id="heading"
+              name="heading"
+              value={article.heading}
+              placeholder="Enter heading"
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              value={article.description}
+              placeholder="Share your knowledge..."
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="submit-button">
+            Publish Article
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
