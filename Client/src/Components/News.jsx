@@ -2,11 +2,10 @@ import React, { useEffect, useState, useCallback } from "react";
 import "../App.css"; // Import CSS file
 import defaultImage from "../Images/defaultnewsimage.jpg";
 import AdComponent from "./Add";
+import { RxCross1 } from "react-icons/rx";
 
-// Updated API Key and Base URL for currentsapi
 
-const API_KEY = "your_api_key"; // Your updated API key
-
+const API_KEY = "iIiFsXASZEXAAR0FZb7Vb6exFlEPX4-M6vm43K56sIqD-gJL"; // Your updated API key
 
 const CATEGORIES = [
   "world",
@@ -30,34 +29,30 @@ const News = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("world");
-  const [country, setCountry] = useState("India"); // Default country
+  const [country, setCountry] = useState("India");
   const [modalArticle, setModalArticle] = useState(null);
-  const [showBreakingNews, setShowBreakingNews] = useState(true); // State to control breaking news visibility
+  const [showBreakingNews, setShowBreakingNews] = useState(true);
 
   const fetchNews = useCallback(async () => {
-    setLoading(true);
+    setLoading(true); // Start loading
     try {
-      const countryCode = COUNTRIES[country]; // Get the country code from the selected country
-      const url = `https://api.currentsapi.services/v1/latest-news?category=${category}&country=${countryCode}&apiKey=${sample}`;
+      const countryCode = COUNTRIES[country];
+      const url = `https://api.currentsapi.services/v1/latest-news?category=${category}&country=${countryCode}&apiKey=${API_KEY}`;
       const response = await fetch(url);
       const data = await response.json();
 
-      console.log(data); // Log to check the response structure
+      console.log(data);
 
-      // Check if the 'news' array is available and not empty
       if (data.news && data.news.length === 0) {
         console.warn("No more news to load.");
       }
 
-      // Update the articles state
       setArticles(data.news || []);
-
-      // Reset the breaking news visibility whenever new data is fetched
       setShowBreakingNews(true);
     } catch (error) {
       console.error("Error fetching news:", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading
     }
   }, [category, country]);
 
@@ -76,9 +71,8 @@ const News = () => {
   return (
     <div className="news-container">
       {/* Navbar with Category Filter and Country Selector */}
-      <nav style={{ padding: '10px', margin: "10px 0px", background: "#A1A1A1", borderRadius: "5px"  , marginTop:"50px", width:"90%"}}>
+      <nav style={{ padding: '10px', margin: "10px 0px", background: "#A1A1A1", borderRadius: "5px", marginTop: "50px", width: "90%" }}>
         <div style={{ display: "flex", justifyContent: "center", gap: "20px", alignItems: "center" }}>
-          {/* Category Filter */}
           <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', margin: 0, padding: 0, gap: "10px" }}>
             {CATEGORIES.map((cat) => (
               <li key={cat} style={{ margin: '0 5px' }}>
@@ -97,8 +91,6 @@ const News = () => {
               </li>
             ))}
           </ul>
-
-          {/* Country Selector */}
           <select
             value={country}
             onChange={(e) => setCountry(e.target.value)}
@@ -118,120 +110,133 @@ const News = () => {
           </select>
         </div>
       </nav>
-    
-      {/* Breaking News Section */}
-      {showBreakingNews && articles.length > 0 && (
+
+      {/* Show Loading Message When Fetching */}
+      {loading ? (
         <div
-          className="breaking_news"
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px",
-            background: "red",
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "18px",
-            marginBottom: "10px",
-            borderRadius: "5px",
+            textAlign: "center",
+            padding: "20px",
+            fontSize: "20px",
+            color: "#333",
           }}
         >
-          <span>Breaking News: {articles[0].title}</span>
-          <button
-            onClick={() => setShowBreakingNews(false)} // Hide the breaking news
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "white",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
-          >
-            &times;
-          </button>
+          Loading news...
         </div>
-      )}
-      <AdComponent/>
-
-      {/* News Feed */}
-      <div className="news-feed">
-        {articles.length > 0 && (
-          <>
-            {/* First News Card (Distinct Style) */}
+      ) : (
+        <>
+          {/* Breaking News Section */}
+          {showBreakingNews && articles.length > 0 && (
             <div
-              className="featured-news-card"
-              onClick={() => openModal(articles[0])}
+              className="breaking_news"
               style={{
-                backgroundImage: `url(${articles[0].image || defaultImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                height: "300px",
-                position: "relative",
-                marginBottom: "20px",
-                borderRadius: "10px",
-                overflow: "hidden",
-                gridColumn: "span 2", // Span two columns
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "10px",
+                background: "red",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "18px",
+                marginBottom: "10px",
+                borderRadius: "5px",
               }}
             >
-              <div
+              <span>Breaking News: {articles[0].title}</span>
+              <button
+                onClick={() => setShowBreakingNews(false)}
                 style={{
-                  position: "absolute",
-                  bottom: "0",
-                  left: "0",
-                  right: "0",
-                  background: "rgba(0, 0, 0, 0.1)",
+                  background: "transparent",
+                  border: "none",
                   color: "white",
-                  padding: "15px",
-                  borderTopLeftRadius: "10px",
-                  borderTopRightRadius: "10px",
+                  fontSize: "20px",
+                  cursor: "pointer",
                 }}
               >
-                <h2 style={{ margin: "0", fontSize: "24px" }}>{articles[0].title}</h2>
-              </div>
+                ×
+              </button>
             </div>
+          )}
+          <AdComponent />
 
-            {/* Remaining News Cards */}
-            <div style={{ display: "contents" }}>
-              {articles.slice(1).map((article, index) => (
+          {/* News Feed */}
+          {articles.length > 0 ? (
+            <div className="news-feed">
+              {/* First News Card */}
+              <div
+                className="featured-news-card"
+                onClick={() => openModal(articles[0])}
+                style={{
+                  backgroundImage: `url(${articles[0].image || defaultImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  height: "300px",
+                  position: "relative",
+                  marginBottom: "20px",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  gridColumn: "span 2",
+                }}
+              >
                 <div
-                  key={index}
-                  className="news-card"
-                  onClick={() => openModal(article)}
                   style={{
-                    gridColumn: "span 1", // Each card spans one column
+                    position: "absolute",
+                    bottom: "0",
+                    left: "0",
+                    right: "0",
+                    background: "rgba(0, 0, 0, 0.1)",
+                    color: "white",
+                    padding: "15px",
+                    borderTopLeftRadius: "10px",
+                    borderTopRightRadius: "10px",
                   }}
                 >
-                  <img
-                    src={article.image || defaultImage}
-                    alt={article.title}
-                    className="news-image"
-                    onError={(e) => { e.target.src = defaultImage; }} // Fallback in case the image fails to load
-                  />
-                  <div className="news-content">
-                    <h2 className="news-heading">{article.title}</h2>
-                    <div className="news-footer">
-                      <span className="news-source">{article.author}</span>
-                      <span className="news-date">
-                        {new Date(article.published).toLocaleDateString()}
-                      </span>
+                  <h2 style={{ margin: "0", fontSize: "24px" }}>{articles[0].title}</h2>
+                </div>
+              </div>
+
+              {/* Remaining News Cards */}
+              <div style={{ display: "contents" }}>
+                {articles.slice(1).map((article, index) => (
+                  <div
+                    key={index}
+                    className="news-card"
+                    onClick={() => openModal(article)}
+                    style={{
+                      gridColumn: "span 1",
+                    }}
+                  >
+                    <img
+                      src={article.image || defaultImage}
+                      alt={article.title}
+                      className="news-image"
+                      onError={(e) => { e.target.src = defaultImage; }}
+                    />
+                    <div className="news-content">
+                      <h2 className="news-heading">{article.title}</h2>
+                      <div className="news-footer">
+                        <span className="news-source">{article.author}</span>
+                        <span className="news-date">
+                          {new Date(article.published).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </>
-        )}
-      </div>
-
-      {/* Loading Indicator */}
-      {loading && <p className="loading-text">Loading news...</p>}
+          ) : (
+            <p>No news available.</p>
+          )}
+        </>
+      )}
 
       {/* Modal */}
       {modalArticle && (
         <div className="modal">
           <div className="modal-content">
             <button className="modal-close" onClick={closeModal}>
-              &times;
+            <RxCross1 color="white" />
             </button>
             {modalArticle.image && (
               <img src={modalArticle.image} alt={modalArticle.title} className="modal-image" />

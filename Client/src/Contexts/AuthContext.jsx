@@ -3,12 +3,8 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return !!localStorage.getItem("token"); // Check if token exists
-  });
-  const [user, setUser] = useState(() => {
-    return JSON.parse(localStorage.getItem("user")) || null; // Load user from storage
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")) || null);
 
   useEffect(() => {
     const checkTokenValidity = async () => {
@@ -25,23 +21,20 @@ export const AuthProvider = ({ children }) => {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${storedToken}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
         });
-        
-
-        console.log(response);
 
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
           setIsLoggedIn(true);
         } else {
-          logout(); // Call logout if token is invalid
+          logout();
         }
       } catch (error) {
         console.error("Error verifying token:", error);
-        logout(); // Ensure logout on failure
+        logout();
       }
     };
 

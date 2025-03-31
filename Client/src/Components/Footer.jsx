@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaEnvelope, FaPhone } from "react-icons/fa";
+import {Link} from "react-router-dom"
 import "../App.css";
 import logo from "../Images/logo.png"
 
@@ -16,7 +17,7 @@ const Footer = () => {
         {/* Middle Section: Contact & Socials */}
         <div className="footer-middle">
           <h3>Contact Us</h3>
-          <p><FaEnvelope className="icon" /> info@dailynews.com</p>
+          <p><FaEnvelope className="icon" /> news.web89@gmail.com</p>
           <p><FaPhone className="icon" /> +123 456 7890</p>
           <div className="social-icons">
             <a href="#"><FaFacebook /></a>
@@ -30,9 +31,9 @@ const Footer = () => {
         <div className="footer-right">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Help</a></li>
+           <li><Link to="/terms-privacy-help"> Privacy Policy</Link></li> 
+            <li><Link to="/terms-privacy-help"> Terms & Conditions</Link></li> 
+            <li><Link to="/terms-privacy-help"> Help</Link></li> 
           </ul>
         </div>
       </div>

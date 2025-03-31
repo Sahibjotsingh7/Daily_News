@@ -11,33 +11,55 @@ import OTPVerification from "./Components/OTPverification";
 import ResetPassword from "./Components/ResetPassword";
 import News from "./Components/News";
 import Articles from "./Components/Articles";
-import { AuthProvider, useAuth } from "./Contexts/AuthContext"; // Import useAuth
 import Weather from "./Components/Weather";
+import TermsPrivacyHelp from "./Components/TermsPrivacyHelp";
+import LostFound from "./Components/LostFound";
+import AdminPanel from "./Components/AdminPanel";
+import { AuthProvider, useAuth } from "./Contexts/AuthContext";
 
-// Protected Route Wrapper
+// Protected Route for Normal Users
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn } = useAuth(); // Get auth state
-  return isLoggedIn ? children : <Navigate to="/login" replace />;
+  const { isLoggedIn, user } = useAuth();
+  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  if (user?.isAdmin) return <Navigate to="/admin" replace />;
+  return children;
+};
+
+// Protected Admin Route
+const AdminRoute = ({ children }) => {
+  const { isLoggedIn, user } = useAuth();
+  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  if (!user?.isAdmin) return <Navigate to="/" replace />;
+  return children;
 };
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Navbar />
+    <Router>
+      <AuthProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Public Routes */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/otp-verification" element={<OTPVerification />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
-          {/* Protected Routes (Using Conditional Rendering) */}
+          {/* Normal User Routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Navbar />
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
+                <Navbar />
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -46,6 +68,7 @@ const App = () => {
             path="/upload"
             element={
               <ProtectedRoute>
+                <Navbar />
                 <Upload />
               </ProtectedRoute>
             }
@@ -54,6 +77,7 @@ const App = () => {
             path="/news"
             element={
               <ProtectedRoute>
+                <Navbar />
                 <News />
               </ProtectedRoute>
             }
@@ -62,6 +86,7 @@ const App = () => {
             path="/weather"
             element={
               <ProtectedRoute>
+                <Navbar />
                 <Weather />
               </ProtectedRoute>
             }
@@ -70,13 +95,45 @@ const App = () => {
             path="/articles"
             element={
               <ProtectedRoute>
+                <Navbar />
                 <Articles />
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/lost&found"
+            element={
+              <ProtectedRoute>
+                <Navbar />
+                <LostFound />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/terms-privacy-help"
+            element={
+              <ProtectedRoute>
+                <Navbar />
+                <TermsPrivacyHelp />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Route */}
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminPanel />
+              </AdminRoute>
+            }
+          />
+
+          {/* Catch-all route */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 };
 

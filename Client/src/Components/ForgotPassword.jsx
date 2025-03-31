@@ -19,7 +19,7 @@ const ForgotPassword = () => {
       alert("OTP sent to your email!");
       navigate("/otp-verification", { state: { email } });
     } else {
-      alert("Error sending OTP. Please check your email.");
+      alert("Error sending OTP. Please check your Entered details.");
     }
   };
 

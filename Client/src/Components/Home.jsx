@@ -9,6 +9,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
+    
     <div style={{ backgroundColor: "aliceBlue" }}>
       {/* Hero Section */}
       <div className="upper_home">
