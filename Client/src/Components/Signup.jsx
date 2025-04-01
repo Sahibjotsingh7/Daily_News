@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaPhone } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Contexts/AuthContext"; // Import useAuth
+import { useNavigate, Link } from "react-router-dom"; // Add Link
+import { useAuth } from "../Contexts/AuthContext";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: "", email: "", mobile: "", password: "" });
   const navigate = useNavigate();
-  const { login } = useAuth(); // Access the login function from context
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,10 +25,10 @@ const Signup = () => {
 
     if (response.ok) {
       const data = await response.json();
-      login(data.user, data.token); // Store user data and token in context and localStorage
-      navigate("/dashboard"); // Redirect to dashboard
+      login(data.user, data.token);
+      navigate("/dashboard");
     } else {
-      alert("Signup failed. Please check your details.");
+      alert("Signup failed. Please check your details." + response.error);
     }
   };
 
@@ -87,6 +87,11 @@ const Signup = () => {
         </div>
 
         <button type="submit" className="signup-btn">Sign Up</button>
+
+        {/* Add link to Login */}
+        <p className="login-link">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
       </form>
     </div>
   );

@@ -1,18 +1,26 @@
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../Contexts/AuthContext"; // Import useAuth
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../Contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import '../App.css'
-import logo from '../Images/logo.png'
+import "../App.css";
+import logo from "../Images/logo.png";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isLoggedIn, user, logout } = useAuth(); // Use AuthContext to get login state and logout function
-  const navigator = useNavigate();
+  const { isLoggedIn, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(); // Call logout from context
+    navigate("/login"); // Redirect to login
+  };
+
   return (
     <nav className="navbar">
-      <div className="navbar-logo"><img src={logo} alt="news logo" height={"40px"} /></div>
+      <div className="navbar-logo">
+        <img src={logo} alt="news logo" height={"40px"} />
+      </div>
 
       <div className="mobile-menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
         {menuOpen ? <FaTimes /> : <FaBars />}
@@ -24,10 +32,19 @@ const Navbar = () => {
         <li><NavLink to="/weather" className="nav-link">Weather</NavLink></li>
         <li><NavLink to="/upload" className="nav-link">Upload+</NavLink></li>
         <li><NavLink to="/articles" className="nav-link">Articles</NavLink></li>
+        <li><NavLink to="/lost&found" className="nav-link">Lost&Found</NavLink></li>
         {isLoggedIn ? (
           <>
-            <li><button  onClick={()=>{navigator('/dashboard')}} className="nav-button">Dashboard</button></li>
-            <li><button className="nav-button" onClick={logout}>Logout</button></li>
+            <li>
+              <button onClick={() => navigate("/dashboard")} className="nav-button">
+                Dashboard
+              </button>
+            </li>
+            <li>
+              <button className="nav-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </li>
           </>
         ) : (
           <>

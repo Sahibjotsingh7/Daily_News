@@ -35,7 +35,8 @@ const AdComponent = () => {
         width: "320px",
         padding: "10px",
         display: "inline-block",
-        background:"aliceblue"
+        background:"aliceblue",
+        marginBottom:"20px",
       }}
     >
       {/* Close Button */}

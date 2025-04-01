@@ -1,5 +1,5 @@
 const express = require("express");
-const authenticateToken = require("../Middlewares/tokenVelidation");
+const authenticateToken = require("../Middlewares/tokenValidation");
 
 const router = express.Router();
 

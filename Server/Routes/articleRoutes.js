@@ -6,7 +6,7 @@ const {
   updateArticle,
   deleteArticle,
 } = require("../Controllers/articleController");
-const authenticateToken = require("../Middlewares/tokenVelidation");
+const authenticateToken = require("../Middlewares/tokenValidation");
 
 const router = express.Router();
 

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { useNavigate  , Link} from "react-router-dom";
-import { useAuth } from "../Contexts/AuthContext"; // Import useAuth
-import '../App.css'
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../Contexts/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const { login } = useAuth(); // Access the login function from context
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,34 +14,27 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Make your API call to authenticate the user
+    // Assume a login API call here
     const response = await fetch("http://localhost:8080/api/users/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
     if (response.ok) {
       const data = await response.json();
-      const userInfo = {
-         name:data.userinfo.name,
-         email:data.userinfo.email,
-         islogedin:true
-      }
-      login( userInfo, data.token); // Store user data and token in context and localStorage
-      navigate("/"); // Redirect to dashboard
+      console.log(data)
+      login(data.user, data.token);
+      navigate("/dashboard");
     } else {
-      alert("Login failed. Please check your credentials.");
+      alert("Login failed.");
     }
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h1 >Welcome Back</h1>
+        <h2>Login</h2>
         <div className="input-group">
           <FaEnvelope className="icon" />
           <input
@@ -66,8 +58,10 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="login-btn">Login</button>
-        <p style={{color:"black" , marginTop:"10px"}}>
-        <Link to="/forgot-password"  style={{  marginTop:"10px"}}>Forgot Password ?</Link>
+
+        {/* Add link to Signup */}
+        <p className="signup-link">
+          Don’t have an account? <Link to="/signup">Sign Up</Link>
         </p>
       </form>
     </div>
